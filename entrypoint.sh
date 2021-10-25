@@ -113,6 +113,7 @@ deploy_meshery(){
   unzip -n mesheryctl.zip 
   mv mesheryctl /usr/local/bin/mesheryctl
   get_meshconfig
+  export KUBECONFIG=$(kind get kubeconfig --name=meshery)
   echo "::debug::Installed mesheryctl"
   kubectl create namespace meshery
   echo "::debug::Deploying Meshery....."
