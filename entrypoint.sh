@@ -107,7 +107,6 @@ install_helm(){
 }
 
 
-
 deploy_meshery(){
   echo "::debug::installing mesheryctl"
   curl -L https://github.com/meshery/meshery/releases/download/v0.5.67/mesheryctl_0.5.67_Linux_x86_64.zip -o mesheryctl.zip
