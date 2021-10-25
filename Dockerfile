@@ -12,6 +12,9 @@ RUN apk add -U ca-certificates
 
 RUN apk add  --no-cache openssl
 
+RUN  apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/edge/main libseccomp
+RUN  apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/edge/community docker
+RUN  apk update && /etc/init.d/docker start 
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
