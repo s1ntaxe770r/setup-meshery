@@ -115,7 +115,6 @@ deploy_meshery(){
   mv mesheryctl /usr/local/bin/mesheryctl
   get_meshconfig
   echo "::debug::Installed mesheryctl"
-  git clone https://github.com/meshery/meshery.git; cd meshery
   kubectl create namespace meshery
   echo "::debug::Deploying Meshery....."
   helm install meshery --namespace meshery --repo https://github.com/meshery/meshery/tree/master/install/kubernetes/helm/meshery
