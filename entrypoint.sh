@@ -118,7 +118,7 @@ deploy_meshery(){
   git clone https://github.com/meshery/meshery.git; cd meshery
   kubectl create namespace meshery
   echo "::debug::Deploying Meshery....."
-  helm install meshery --namespace meshery install/kubernetes/helm/meshery
+  helm install meshery --namespace meshery --repo https://github.com/meshery/meshery/tree/master/install/kubernetes/helm/meshery
   expose_meshery  
   echo "127.0.0.1 meshery.local" >> /etc/hosts
   echo "::debug::Deployed Meshery....."
