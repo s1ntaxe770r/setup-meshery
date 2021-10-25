@@ -106,7 +106,9 @@ setup_k8s() {
 install_helm(){ 
 	# Because i like living on the edge
 	echo "::debug::Installing Helm"
-	curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+	curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+  chmod 700 get_helm.sh
+  ./get_helm.sh
 	echo "::debug::Installed Helm"
 }
 
