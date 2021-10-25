@@ -10,7 +10,7 @@ RUN apk add --no-cache curl
 
 RUN apk add -U ca-certificates 
 
-RUN apk add  --no-cache openssl openrc
+RUN apk add  --no-cache openssl openrc git
 
 
 RUN  apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/edge/main libseccomp
