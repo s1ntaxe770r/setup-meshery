@@ -90,7 +90,6 @@ setup_k8s() {
 	curl -L https://golang.org/dl/go1.17.2.linux-amd64.tar.gz -o go.tar.gz 
 	rm -rf /usr/local/go && tar -C /usr/local -xzf go.tar.gz
 	export PATH=$PATH:/usr/local/go/bin
-	source $HOME/.profile
 	GO111MODULE="on" go get sigs.k8s.io/kind@v0.11.1
 	get_cluster_config
 	echo "::debug::Installing Kubectl..."
