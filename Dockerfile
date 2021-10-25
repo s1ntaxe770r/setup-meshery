@@ -8,6 +8,8 @@ RUN apk add --no-cache bash
 
 RUN apk add --no-cache curl
 
+RUN apk add -U ca-certificates 
+
 RUN apk add  --no-cache openssl
 
 RUN chmod +x /entrypoint.sh
