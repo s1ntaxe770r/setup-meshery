@@ -1,9 +1,9 @@
 name: "Install Meshery"
 description: "Deploy Meshery using Github actions"
 author: "s1ntaxe770r"
-runs:
-  using: "docker"
-  image: 'Dockerfile'
 branding:
   icon: 'check-circle'
   color: "blue"
+runs:
+  using: "docker"
+  image: 'Dockerfile'
