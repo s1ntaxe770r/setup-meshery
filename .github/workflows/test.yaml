@@ -5,7 +5,7 @@ on:
       - master
 jobs:
   job1:
-    name: Run Performance Test
+    name: Much CI
     runs-on: ubuntu-latest
     steps:
       - name: checkout
