@@ -29,6 +29,6 @@ jobs:
 
 
 ## Todo 
+- [ ] Support versioned Installs
 
-[ ] Support versioned Installs
-[ ] Deploy Meshery in existing clusters
+- [ ] Deploy Meshery in existing clusters
