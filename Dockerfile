@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM golang:alpine3.14
 
 COPY LICENSE README.md /
 
