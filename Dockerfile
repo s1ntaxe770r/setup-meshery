@@ -6,8 +6,6 @@ COPY entrypoint.sh /entrypoint.sh
 
 RUN apt-get update -y && apt install -y openssl curl bash ca-certificates 
 
-RUN  apt install docker -y && systemctl start docker
-
-RUN chmod +x /entrypoint.sh
+RUN curl -fsSL https://get.docker.com -o install-docker.sh && ./install-docker.sh 
 
 ENTRYPOINT ["/entrypoint.sh"]
