@@ -113,7 +113,7 @@ deploy_meshery(){
   unzip -n mesheryctl.zip 
   mv mesheryctl /usr/local/bin/mesheryctl
   get_meshconfig
-  docker ps
+  kubectl get nodes
   mkidr -p $HOME/.kube
   kind get kubeconfig --name=meshery-ci > $HOME/.kube/config
   echo "::debug::Installed mesheryctl"
