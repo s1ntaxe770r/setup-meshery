@@ -94,6 +94,7 @@ setup_k8s() {
 	echo "::debug::Done..."
 	echo "::debug::Creating Kubernetes cluster"
 	kind create cluster  --name meshery-ci --config config.yaml 
+	sleep 60
 	echo "::debug::Created Kubernetes cluster"
 }
 
