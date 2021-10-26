@@ -1,4 +1,4 @@
-FROM golang:stretch
+FROM golang:latest
 
 COPY LICENSE README.md /
 
