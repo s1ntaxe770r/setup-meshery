@@ -1,11 +1,9 @@
-FROM golang:latest
+FROM ubuntu:latest
 
 COPY LICENSE README.md /
 
 COPY entrypoint.sh /entrypoint.sh
 
-RUN apt-get update -y && apt install -y openssl unzip curl bash ca-certificates 
-
-RUN curl -fsSL https://get.docker.com -o install-docker.sh && chmod +x install-docker.sh && ./install-docker.sh 
+RUN apt-get update -y && apt install -y openssl git unzip curl bash ca-certificates 
 
 ENTRYPOINT ["/entrypoint.sh"]
