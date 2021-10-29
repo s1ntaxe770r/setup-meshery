@@ -114,7 +114,7 @@ deploy_meshery(){
   unzip -n mesheryctl.zip 
   mv mesheryctl /usr/local/bin/mesheryctl
   echo "::debug::Installed mesheryctl"
- helm install -set service.type="NodePort" meshery --namespace meshery --repo https://github.com/meshery/meshery/tree/master/install/kubernetes/helm/meshery
+ helm install --set service.type="NodePort" meshery --namespace meshery --repo https://github.com/meshery/meshery/tree/master/install/kubernetes/helm/meshery
   echo "::debug::Deploying Meshery....."
   kubectl config view --minify --flatten
   kubectl create namespace meshery
