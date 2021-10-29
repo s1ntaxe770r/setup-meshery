@@ -6,27 +6,27 @@ set -o pipefail
 
 
 
-get_cluster_config(){
-cat > config.yaml <<EOF
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-nodes:
-- role: control-plane
-  kubeadmConfigPatches:
-  - |
-    kind: InitConfiguration
-    nodeRegistration:
-      kubeletExtraArgs:
-        node-labels: "ingress-ready=true"
-  extraPortMappings:
-  - containerPort: 80
-    hostPort: 80
-    protocol: TCP
-  - containerPort: 443
-    hostPort: 443
-    protocol: TCP
-EOF
-}
+# get_cluster_config(){
+# cat > config.yaml <<EOF
+# kind: Cluster
+# apiVersion: kind.x-k8s.io/v1alpha4
+# nodes:
+# - role: control-plane
+#   kubeadmConfigPatches:
+#   - |
+#     kind: InitConfiguration
+#     nodeRegistration:
+#       kubeletExtraArgs:
+#         node-labels: "ingress-ready=true"
+#   extraPortMappings:
+#   - containerPort: 80
+#     hostPort: 80
+#     protocol: TCP
+#   - containerPort: 443
+#     hostPort: 443
+#     protocol: TCP
+# EOF
+# }
 
 
 get_meshconfig(){
@@ -34,7 +34,7 @@ mkdir $HOME/.meshery
 cat > ~/.meshery/config.yaml <<EOF
 contexts:
   local:
-    endpoint: http://meshery.local
+    endpoint: http://localhost:9081
     token: Default
     platform: kubernetes
     adapters:
@@ -56,47 +56,47 @@ tokens:
 EOF
 }
 
-expose_meshery(){
-cat > ~/.meshery/ingress.yaml <<EOF
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: meshery-ingress
-  labels:
-    name: meshery-ingress
-spec:
-  rules:
-  - host: meshery.local
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: meshery
-            port: 
-              number: 9081
-EOF
-kubectl apply -n meshery -f ~/.meshery/ingress.yaml 
-}
+# expose_meshery(){
+# cat > ~/.meshery/ingress.yaml <<EOF
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: meshery-ingress
+#   labels:
+#     name: meshery-ingress
+# spec:
+#   rules:
+#   - host: meshery.local
+#     http:
+#       paths:
+#       - pathType: Prefix
+#         path: "/"
+#         backend:
+#           service:
+#             name: meshery
+#             port: 
+#               number: 9081
+# EOF
+# kubectl apply -n meshery -f ~/.meshery/ingress.yaml 
+# }
 
-install_kubectl(){
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-}
+# install_kubectl(){
+# curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+# install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+# }
 
 
-setup_k8s() {
-	GO111MODULE="on" go get sigs.k8s.io/kind@v0.11.1
-	get_cluster_config
-	echo "::debug::Installing Kubectl..."
-	install_kubectl
-	echo "::debug::Done..."
-	echo "::debug::Creating Kubernetes cluster"
-	kind create cluster  --name meshery-ci --config config.yaml 
-	sleep 60
-	echo "::debug::Created Kubernetes cluster"
-}
+# setup_k8s() {
+# 	GO111MODULE="on" go get sigs.k8s.io/kind@v0.11.1
+# 	get_cluster_config
+# 	echo "::debug::Installing Kubectl..."
+# 	install_kubectl
+# 	echo "::debug::Done..."
+# 	echo "::debug::Creating Kubernetes cluster"
+# 	kind create cluster  --name meshery-ci --config config.yaml 
+# 	sleep 60
+# 	echo "::debug::Created Kubernetes cluster"
+# }
 
 install_helm(){ 
 	# Because i like living on the edge
@@ -113,23 +113,22 @@ deploy_meshery(){
   curl -L https://github.com/meshery/meshery/releases/download/v0.5.67/mesheryctl_0.5.67_Linux_x86_64.zip -o mesheryctl.zip
   unzip -n mesheryctl.zip 
   mv mesheryctl /usr/local/bin/mesheryctl
-  get_meshconfig
-  kubectl get nodes
-  mkidr -p $HOME/.kube
-  kind get kubeconfig --name=meshery-ci > $HOME/.kube/config
   echo "::debug::Installed mesheryctl"
-  kubectl create namespace meshery
+  git clone https://github.com/meshery/meshery.git && cd meshery;
+
+  #Install yq
+  wget https://github.com/mikefarah/yq/releases/download/v4.13.5/yq_linux_amd64 -O /usr/bin/yq &&\
+    chmod +x /usr/bin/yq
+
+  cd meshery/install/Kubernetes/helm/meshery && yq e '.service.type = "NodePort"' -i values.yaml 
   echo "::debug::Deploying Meshery....."
-  helm install meshery --namespace meshery --repo https://github.com/meshery/meshery/tree/master/install/kubernetes/helm/meshery
-  expose_meshery  
-  echo "127.0.0.1 meshery.local" >> /etc/hosts
-  echo "::debug::Deployed Meshery....."
+  helm install meshery --namespace meshery .
+  echo "::debug::Deployed Meshery.....::"
 }
 
 
 main(){
  install_helm
- setup_k8s
  deploy_meshery
 }
 
