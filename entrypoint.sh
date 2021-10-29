@@ -120,6 +120,8 @@ deploy_meshery(){
     chmod +x /usr/bin/yq
   cd meshery/install/kubernetes/helm/meshery && yq e '.service.type = "NodePort"' -i values.yaml 
   echo "::debug::Deploying Meshery....."
+  kubectl config view --minify --flatten
+  kubectl create namespace meshery
   helm install meshery --namespace meshery .
   echo "::debug::Deployed Meshery.....::"
 }
