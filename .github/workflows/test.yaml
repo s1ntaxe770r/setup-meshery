@@ -8,9 +8,6 @@ jobs:
     name: Much CI
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
-
       - name: Deploy k8s-minikube
         uses: manusa/actions-setup-minikube@v2.4.1
         with:
