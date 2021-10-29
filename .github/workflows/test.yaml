@@ -11,6 +11,13 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
+      - name: Deploy k8s-minikube
+        uses: manusa/actions-setup-minikube@v2.4.1
+        with:
+          minikube version: 'v1.21.0'
+          kubernetes version: 'v1.20.7'
+          driver: docker
+
       - name: Install Meshery
         uses: s1ntaxe770r/setup-meshery@master 
 
