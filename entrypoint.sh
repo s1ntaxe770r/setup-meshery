@@ -124,9 +124,21 @@ deploy_meshery(){
   echo "::debug::Deployed Meshery.....::"
 }
 
+wait_for_docker() {
+	while :
+	do
+		if docker version -f '{{.Server.Version}} - {{.Client.Version}}'
+		then
+			break
+		else
+			sleep 5
+		fi
+	done
+}
 
 main(){
  install_helm
+ wait_for_docker
  deploy_meshery
 }
 
