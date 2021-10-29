@@ -118,7 +118,7 @@ deploy_meshery(){
   #Install yq
   wget https://github.com/mikefarah/yq/releases/download/v4.13.5/yq_linux_amd64 -O /usr/bin/yq &&\
     chmod +x /usr/bin/yq
-  cd meshery/install/Kubernetes/helm/meshery && yq e '.service.type = "NodePort"' -i values.yaml 
+  cd meshery/install/kubernetes/helm/meshery && yq e '.service.type = "NodePort"' -i values.yaml 
   echo "::debug::Deploying Meshery....."
   helm install meshery --namespace meshery .
   echo "::debug::Deployed Meshery.....::"
